@@ -1,0 +1,74 @@
+﻿@model vuejs.Models.Login
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    var mensagemlogin = TempData["mensagem-login"];
+}
+<script>
+    var msg = "@mensagemlogin";
+    mostrarToast("Atenção", msg, "warning");
+</script>
+    <div id="loginPage">
+        <div class="container animated fadeInDown">
+            <div class="card card-container">
+                <img id="profile-img" class="profile-img-card" src="~/Content/img/logo.png" />
+
+                <form class="form-signin" v-on:submit.prevent="formSubmit">
+                    <div class="form-group">
+                        <div class="input-group" style="text-align: center;">
+                            @*<p>Controle suas atividades, seus projetos e seu negócio.<br>Entre agora mesmo</p>*@
+                        </div>
+
+                        <div class="input-group" style="margin-top: 15px">
+                            <input class="form-control" type="text" id="identificacao" v-model="acesso.identificacao" required autofocus/>
+                        </div>
+                        <div class="input-group" style="margin-bottom: 25px; margin-top: 20px;">
+                            <input class="form-control" type="password" id="senha" v-model="acesso.senha" required/>
+                            <span title="Exibir Senha" class="input-group-text add-on input-group-addon" id="versenha" tabindex="100" style="cursor: pointer;"><i class="fa fa-eye"></i></span>
+                        </div>
+                        @*<span class="text-danger" style="color: crimson;">@mensagemlogin</span>*@
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block btn-signin botao">Entrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    
+        new Vue({
+            el: '#loginPage',
+            data() {
+                return {
+                    acesso: JSON.parse('@Html.Raw(Json.Encode(Model))')
+                }
+            },
+            methods: {
+                formSubmit(e) {
+                    e.preventDefault()
+                    var url = '@Url.Action("Login","Home")'
+
+                    axios({
+                        method: 'post',
+                        url: url,
+                        data: {
+                            "identificacao": this.acesso.identificacao,
+                            "senha": this.acesso.senha
+                        }
+                    }).then(function (response) {
+                        var url = '@Url.Action("Index","Home")'
+                        window.location = url
+                    }).catch(function (error) {
+                        mostrarToast("Atenção","Erro ao efetuar login.","warning")
+                    })
+                }
+            }
+        })
+
+
+
+</script>
+
+
+

@@ -1,0 +1,94 @@
+﻿@model vuejs.Models.UrlBackendMobile
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div id="editPage">
+    <div class="card">
+        <div class="card card-header">Editar</div>
+        <div class="card-body">
+            <form v-on:submit.prevent="formSubmit">
+                
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="cnpj" class="control-label col-md-2">CNPJ:</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" id="cnpj" v-model="url.CNPJ" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url" class="control-label col-md-2">URL:</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" id="url" v-model="url.URL" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="portaretaguarda" class="control-label col-md-2">Porta Retaguarda:</label>
+                        <div class="col-md-2">
+                            <input class="form-control" type="number" id="portaretaguarda" v-model="url.PortaRetaguarda" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="portaapp" class="control-label col-md-2">Porta App:</label>
+                        <div class="col-md-2">
+                            <input class="form-control" type="number" id="portaapp" v-model="url.PortaApp" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <button class="btn btn-success">Salvar</button>
+                        <button class="btn btn-info" v-on:click="voltar()">Voltar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        new Vue({
+                el: '#editPage',
+                data() {
+                    return {
+                        url: JSON.parse('@Html.Raw(Json.Encode(@Model))')
+                    }
+                },
+                methods: {
+                    formSubmit(e) {
+                        e.preventDefault()
+                        var url = '/UrlBackendMobiles/Edit/'
+
+                        axios({
+                            method: 'post',
+                            url: url,
+                            data: {
+                                "id": this.url.id,
+                                "CNPJ": this.url.CNPJ,
+                                "URL": this.url.URL,
+                                "PortaRetaguarda": this.url.PortaRetaguarda,
+                                "PortaApp": this.url.PortaApp
+                            }
+                        }).then(function (response) {
+                            var url = '@Url.Action("Index","Home")'
+                            window.location = url
+                        }).catch(function (error) {
+                            alert("erro")
+                        })
+
+                    },
+                     voltar: function () {
+                        var url = '@Url.Action("Index","Home")'
+                        window.location = url
+                    },
+                }
+            })
+    </script>
+}

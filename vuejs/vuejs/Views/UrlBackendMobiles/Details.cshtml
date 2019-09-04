@@ -1,0 +1,60 @@
+﻿@model vuejs.Models.UrlBackendMobile
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div id="detailPage">
+    <div class="card">
+        <div class="card card-header">Detalhes</div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2 alinha-direita">ID:</dt>
+                <dd class="col-sm-10">{{ url.id }}</dd>
+
+                <dt class="col-sm-2 alinha-direita">CNPJ:</dt>
+                <dd class="col-sm-10">{{ url.CNPJ }}</dd>
+
+                <dt class="col-sm-2 alinha-direita">URL:</dt>
+                <dd class="col-sm-10">{{ url.URL }}</dd>
+
+                <dt class="col-sm-2 alinha-direita">Porta Retaguarda:</dt>
+                <dd class="col-sm-10">{{ url.PortaRetaguarda }}</dd>
+
+                <dt class="col-sm-2 alinha-direita">Porta App:</dt>
+                <dd class="col-sm-10">{{ url.PortaApp }}</dd>
+            </dl>
+            <hr/>
+            <p>
+                <button class="btn btn-success" v-on:click="editar(url)">Editar</button>
+                <button class="btn btn-info" v-on:click="voltar()">Voltar</button>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        new Vue({
+            el: '#detailPage',
+            data() {
+                return {
+                    url: JSON.parse('@Html.Raw(Json.Encode(@Model))')
+                }
+            },
+            methods: {
+                editar: function (modelo) {
+                    var url = '@Url.Action("Edit","UrlBackendMobiles")'
+                    this.redireciona(url + '\\' + modelo.id)
+                },
+                voltar: function () {
+                    var url = '@Url.Action("Index","Home")'
+                    this.redireciona(url)
+                },
+                redireciona: function (url) {
+                    window.location = url
+                }
+            }
+        })
+    </script>
+}

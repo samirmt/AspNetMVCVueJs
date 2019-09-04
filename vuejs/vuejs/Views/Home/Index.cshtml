@@ -1,0 +1,69 @@
+﻿@model IEnumerable<vuejs.Models.UrlBackendMobile>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div style="text-align:right; padding-bottom:10px;"><a href="@Url.Action("Create","UrlBackendMobiles")" class="btn btn-outline-info">Novo</a></div>
+
+<div id="app">
+    <table id="tabela-url" class="table table-actions table-striped table-hover mb-0 table-responsive-md" data-table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>CNPJ</th>
+                <th>URL</th>
+                <th>PORTA RETAGUARDA</th>
+                <th>PORTA APP</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="url in urls">
+                <td>{{ url.id }}</td>
+                <td>{{ url.CNPJ }}</td>
+                <td>{{ url.URL }}</td>
+                <td>{{ url.PortaRetaguarda }}</td>
+                <td>{{ url.PortaApp }}</td>
+                <th>
+                    <div class="dropdown">
+                        <button style="font-size:12px;" type="button" class="btn btn-primary btn-sm dropdown-toggle" id="acoes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ações</button>
+                        <div class="dropdown-menu" aria-labelledby="acoes">
+                            <button style="font-size:13px;" class="dropdown-item" v-on:click="detalhes(url)">Detalhes</button>
+                            <button style="font-size:13px;" class="dropdown-item" v-on:click="editar(url)">Editar</button>
+                            <button style="font-size:13px;" class="dropdown-item" v-on:click="excluir(url)">Excluir</button>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                urls: JSON.parse('@Html.Raw(Json.Encode(@Model))')
+            }
+        },
+        methods: {
+            detalhes: function (modelo) {
+                var url = '@Url.Action("Details","UrlBackendMobiles")'
+                this.redireciona(url + '\\' + modelo.id)
+            },
+            editar: function (modelo) {
+                var url = '@Url.Action("Edit","UrlBackendMobiles")'
+                this.redireciona(url + '\\' + modelo.id)
+            },
+            excluir: function (modelo) {
+                var url = '@Url.Action("Delete","UrlBackendMobiles")'
+                this.redireciona(url + '\\' + modelo.id)
+            },
+            redireciona: function (url) {
+                window.location = url
+            }
+        }
+    })
+</script>

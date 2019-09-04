@@ -1,0 +1,51 @@
+﻿
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Entrar</title>
+
+    <!-- Bootstrap -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    @Styles.Render("~/Content/csslogin")
+    @Styles.Render("~/Content/toast")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/toast")
+    @Scripts.Render("~/bundles/vue")
+    <script src="~/Scripts/custom.js" type="text/javascript"></script>
+    @RenderSection("scripts", required: false)
+
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#versenha").click(function () {
+                if ($("#senha").attr("type") == "password") {
+                    $("#senha").attr("type", "text");
+                    $("#versenha").attr("title", "Ocultar senha");
+                    $("#versenha i").addClass("fa-eye-slash");
+                    $("#versenha i").removeClass("fa-eye");
+                }
+                else {
+                    $("#senha").attr("type", "password");
+                    $("#versenha").attr("title", "Exibir senha");
+                    $("#versenha i").removeClass("fa-eye-slash");
+                    $("#versenha i").addClass("fa-eye");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
